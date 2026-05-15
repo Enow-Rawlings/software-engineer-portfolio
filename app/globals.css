@@ -1,0 +1,166 @@
+@import 'tailwindcss';
+
+:root {
+  /* Light mode - Premium Color Palette */
+  --background: #ffffff;
+  --foreground: #1e2a63;
+  --card: #f8fafc;
+  --card-foreground: #1e2a63;
+  --primary: #4f6ef7;
+  --primary-foreground: #ffffff;
+  --secondary: #6b7280;
+  --secondary-foreground: #ffffff;
+  --muted: #e2e8f0;
+  --muted-foreground: #64748b;
+  --accent: #14b8a6;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #f1f5f9;
+  --ring: #4f6ef7;
+  --radius: 0.75rem;
+}
+
+.dark {
+  /* Dark mode - Premium Color Palette */
+  --background: #0f1629;
+  --foreground: #f1f5f9;
+  --card: #1a2847;
+  --card-foreground: #f1f5f9;
+  --primary: #7c9efb;
+  --primary-foreground: #0f1629;
+  --secondary: #a0aec0;
+  --secondary-foreground: #0f1629;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  --accent: #2dd4bf;
+  --accent-foreground: #0f1629;
+  --destructive: #f87171;
+  --destructive-foreground: #0f1629;
+  --border: #334155;
+  --input: #1e293b;
+  --ring: #7c9efb;
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply bg-background;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-foreground;
+  }
+}
+
+@layer components {
+  /* Glass morphism effect */
+  .glass {
+    @apply backdrop-blur-sm bg-white/10 border border-white/20 rounded-xl;
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-sm bg-black/10 border border-white/10 rounded-xl;
+  }
+
+  /* Premium shadow for cards */
+  .card-shadow {
+    @apply shadow-lg shadow-black/10;
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 300ms ease-in-out;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent;
+  }
+
+  /* Premium button styles */
+  .btn-primary {
+    @apply px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:shadow-lg active:scale-95;
+    transition: all 300ms ease-in-out;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-secondary text-secondary-foreground rounded-lg font-semibold hover:shadow-lg active:scale-95;
+    transition: all 300ms ease-in-out;
+  }
+
+  /* Section spacing */
+  .section-padding {
+    @apply py-20 px-4 md:px-8 lg:px-16;
+  }
+
+  /* Flex center */
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+}
+
+/* Particles animation background */
+@keyframes particleFloat {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+.particle {
+  animation: particleFloat 6s ease-in-out infinite;
+}
+
+/* Smooth page transitions */
+html {
+  scroll-behavior: smooth;
+}
+
