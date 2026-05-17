@@ -5,28 +5,22 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal'
 
 const experiences = [
   {
-    title: 'Junior Full Stack Developer',
-    company: 'Tech Innovation Co',
-    period: '2022 - Present',
-    description: 'Leading development of scalable web applications using React and Node.js. Managing team of developers and mentoring junior engineers.',
-    technologies: ['React', 'Node.js', 'JavaScript', 'AWS'],
-    color: 'from-blue-500 to-cyan-500',
+    title: "Software Engineering Intern",
+    company: "ZENVATECH",
+    period: "Jul 2024 – Aug 2024",
+    description:
+      "Contributed to frontend development during a 2-month internship. Built and styled responsive websites and collaborated on a real-time chat application, handling UI components, Firebase integration, and state management.",
+    technologies: ["React.js", "Firebase", "Tailwind CSS", "JavaScript"],
+    color: "from-purple-500 to-pink-500",
   },
   {
-    title: 'Full Stack Developer',
-    company: 'ZENVATECH',
-    period: '2024',
-    description: 'Developed and maintained multiple client applications using modern tech stack. Implemented CI/CD pipelines and improved deployment processes.',
-    technologies: ['React.js', 'Firebase', 'Tailwind CSS', 'Docker'],
-    color: 'from-purple-500 to-pink-500',
-  },
-  {
-    title: 'Frontend Developer',
-    company: 'Freelancer',
-    period: '2025 - Present',
-    description: 'Created responsive and interactive user interfaces using React. Collaborated with designers to implement pixel-perfect designs.',
-    technologies: ['React', 'JavaScript', 'CSS', 'stitch'],
-    color: 'from-green-500 to-teal-500',
+    title: "Independent Developer",
+    company: "Self-directed",
+    period: "2025 – Present",
+    description:
+      "Building personal and open-source projects outside of academics, including SiteShield — a Flask-based web security scanning SaaS with scheduled monitoring, email alerts, and tiered access. Also actively studying ethical hacking and penetration testing through CTF challenges and self-study.",
+    technologies: ["Python", "Flask", "PostgreSQL", "Redis", "Kali Linux"],
+    color: "from-green-500 to-teal-500",
   },
 ]
 

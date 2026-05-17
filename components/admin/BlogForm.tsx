@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
+import { storage } from '@/lib/firebase';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 interface BlogPost {
   id: string;
@@ -14,6 +16,7 @@ interface BlogPost {
   featured: boolean;
   published: boolean;
   publishedAt: string;
+  image?: string;
   createdAt: string;
 }
 
@@ -23,7 +26,7 @@ interface BlogFormProps {
   onCancel: () => void;
 }
 
-const CATEGORIES = ['React', 'JavaScript', 'Web Development', 'Career', 'Tips', 'Other'];
+const CATEGORIES = ['Software Development', 'Cybersecurity', 'CTF Writeups', 'Career & Learning'] as const;
 
 export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
   const [formData, setFormData] = useState<BlogPost>(
@@ -32,16 +35,18 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
       title: '',
       excerpt: '',
       content: '',
-      category: 'Web Development',
+      category: 'Software Development',
       tags: [],
       featured: false,
       published: true,
       publishedAt: new Date().toISOString(),
+      image: '',
       createdAt: new Date().toISOString(),
     }
   );
 
   const [tagInput, setTagInput] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const handleChange = (field: string, value: any) => {
     setFormData({ ...formData, [field]: value });
@@ -54,6 +59,23 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
         tags: [...formData.tags, tagInput.trim()],
       });
       setTagInput('');
+    }
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const storageReference = storageRef(storage, `blog_images/${formData.id}-${file.name}`);
+      await uploadBytes(storageReference, file);
+      const url = await getDownloadURL(storageReference);
+      setFormData({ ...formData, image: url });
+    } catch (err) {
+      console.error('Image upload error:', err);
+      alert('Failed to upload image');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -106,6 +128,27 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
           className="w-full px-4 py-2 rounded-lg bg-input border border-border text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
           placeholder="Brief summary of your blog post"
         />
+      </div>
+
+      {/* Cover Image */}
+      <div>
+        <label className="block text-sm font-semibold text-foreground mb-2">
+          Cover Image
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="w-full"
+        />
+        {uploading && <p className="text-sm text-muted-foreground mt-2">Uploading image...</p>}
+        {formData.image && (
+          <img
+            src={formData.image}
+            alt="Cover preview"
+            className="mt-3 w-full max-h-64 object-cover rounded-lg"
+          />
+        )}
       </div>
 
       {/* Category */}

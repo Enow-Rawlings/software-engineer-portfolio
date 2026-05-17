@@ -5,10 +5,10 @@ import { AnimatedCounter } from '@/components/animations/AnimatedCounter'
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
 
 const stats = [
-  { value: 50, suffix: '+', label: 'Projects Completed' },
-  { value: 30, suffix: '+', label: 'Happy Clients' },
-  { value: 5, suffix: '+', label: 'Years Experience' },
-  { value: 100, suffix: '%', label: 'Client Satisfaction' },
+  { value: 3, suffix: '+', label: 'Real-World Projects Built' },
+  { value: 1, suffix: '', label: 'Internship Completed' },
+  { value: 2, suffix: '+', label: 'Years Self-Studying Security' },
+  { value: 100, suffix: '+', label: 'Hours in CTF Challenges' },
 ]
 
 export function StatsSection() {

@@ -59,7 +59,7 @@ export function Footer() {
             <motion.div variants={itemVariants}>
               <h3 className="text-2xl font-bold mb-4 gradient-text">Akoh Rawlings</h3>
               <p className="text-sm opacity-75 leading-relaxed">
-                A passionate software engineer building innovative digital solutions. Specialized in full-stack development with modern technologies.
+              Software engineer with a security mindset. I build full-stack applications and study how to break them — because understanding both sides makes for better, more resilient software. Currently pursuing my eJPT certification and a Master's in Cybersecurity while shipping real projects from Cameroon to the world.
               </p>
             </motion.div>
 

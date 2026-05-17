@@ -13,6 +13,7 @@ interface Project {
   github: string;
   demo: string;
   visible: boolean;
+  category: 'Full Stack' | 'Cybersecurity' | 'Tools & Scripts';
   createdAt: string;
 }
 
@@ -21,6 +22,8 @@ interface ProjectFormProps {
   onSubmit: (project: Project) => void;
   onCancel: () => void;
 }
+
+const CATEGORIES = ['Full Stack', 'Cybersecurity', 'Tools & Scripts'] as const;
 
 export function ProjectForm({ project, onSubmit, onCancel }: ProjectFormProps) {
   const [formData, setFormData] = useState<Project>(
@@ -33,6 +36,7 @@ export function ProjectForm({ project, onSubmit, onCancel }: ProjectFormProps) {
       github: '',
       demo: '',
       visible: true,
+      category: 'Full Stack',
       createdAt: new Date().toISOString(),
     }
   );
@@ -123,6 +127,24 @@ export function ProjectForm({ project, onSubmit, onCancel }: ProjectFormProps) {
             className="mt-4 w-full max-h-64 object-cover rounded-lg"
           />
         )}
+      </div>
+
+      {/* Category */}
+      <div>
+        <label className="block text-sm font-semibold text-foreground mb-2">
+          Project Category *
+        </label>
+        <select
+          value={formData.category}
+          onChange={(e) => handleChange('category', e.target.value)}
+          className="w-full px-4 py-2 rounded-lg bg-input border border-border text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          {CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Technologies */}

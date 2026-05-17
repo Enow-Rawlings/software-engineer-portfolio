@@ -16,6 +16,7 @@ interface Project {
   github: string
   demo: string
   visible: boolean
+  category?: 'Full Stack' | 'Cybersecurity' | 'Tools & Scripts'
   createdAt: string
 }
 
@@ -46,11 +47,13 @@ export function ProjectsSection() {
     fetchProjects()
   }, [])
 
-  const categories = ['All', ...new Set(projects.map(p => 'Full Stack'))] // Default category for now
+  // Always show all available categories
+  const ALL_CATEGORIES = ['Full Stack', 'Cybersecurity', 'Tools & Scripts'] as const
+  const categories = ['All', ...ALL_CATEGORIES]
 
   const filteredProjects = selectedCategory === 'All'
     ? projects
-    : projects.filter(p => selectedCategory === 'Full Stack')
+    : projects.filter(p => (p.category || 'Full Stack') === selectedCategory)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -158,7 +161,7 @@ function ProjectCard({ project }: ProjectCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
       whileHover={{ y: -8 }}
-      className="group relative h-96"
+      className="group relative min-h-[24rem] md:h-96"
       onHoverStart={() => setIsFlipped(true)}
       onHoverEnd={() => setIsFlipped(false)}
     >
@@ -211,6 +214,28 @@ function ProjectCard({ project }: ProjectCardProps) {
                     {tech}
                   </span>
                 ))}
+              </div>
+
+              {/* Mobile action buttons */}
+              <div className="mt-6 flex flex-col gap-3 md:hidden">
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-lg hover:shadow-lg transition-all duration-300 font-semibold"
+                >
+                  <Github size={18} />
+                  Code
+                </a>
+                <a
+                  href={project.demo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary/5 transition-all duration-300 font-semibold"
+                >
+                  <ExternalLink size={18} />
+                  Live
+                </a>
               </div>
             </div>
           </div>

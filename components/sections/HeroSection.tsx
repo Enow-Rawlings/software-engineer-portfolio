@@ -1,8 +1,11 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight, Download } from 'lucide-react'
 import Link from 'next/link'
+import { doc, getDoc } from 'firebase/firestore'
+import { db } from '@/lib/firebase'
 import { TypingEffect } from '@/components/animations/TypingEffect'
 
 export function HeroSection() {
@@ -22,9 +25,30 @@ export function HeroSection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8, ease: 'easeOut' as const },
     },
   }
+
+  const [cvUrl, setCvUrl] = useState('')
+
+  useEffect(() => {
+    const loadCvUrl = async () => {
+      try {
+        const settingsDoc = doc(db, 'settings', 'portfolio')
+        const docSnap = await getDoc(settingsDoc)
+        if (docSnap.exists()) {
+          const data = docSnap.data()
+          if (data.cvUrl) {
+            setCvUrl(data.cvUrl as string)
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load CV URL', error)
+      }
+    }
+
+    loadCvUrl()
+  }, [])
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
@@ -58,11 +82,11 @@ export function HeroSection() {
           A{' '}
           <TypingEffect
             texts={[
-              'Full Stack Developer',
-              'Software Engineer',
-              'Problem Solver',
-              'Tech Innovator',
-              'CyberSecurity Enthusiasts'
+                    "Full-Stack Developer",
+                    "Cybersecurity Enthusiast",
+                    "Ethical Hacking Student",
+                    "Security-Minded Engineer",
+                    "CTF Player",
             ]}
             speed={100}
             delay={2000}
@@ -71,8 +95,7 @@ export function HeroSection() {
 
         {/* Description */}
         <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-          I build innovative digital solutions with modern technologies. Specializing in full-stack development, 
-          web applications, and creating seamless user experiences that matter.
+         I'm a software engineer who got curious about how things break. Now I build full-stack applications and probe them for weaknesses — because the best developers understand both sides of the wall.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -100,12 +123,19 @@ export function HeroSection() {
           </Link>
 
           <a
-            href="/cv.pdf"
-            download
-            className="group px-8 py-4 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
+            href={cvUrl || undefined}
+            download={!!cvUrl}
+            className={
+              `group px-8 py-4 border-2 rounded-lg font-semibold transition-all duration-300 inline-flex items-center gap-2 ${
+                cvUrl
+                  ? 'border-primary text-primary hover:bg-primary/5 hover:scale-105'
+                  : 'border-border text-muted-foreground cursor-not-allowed opacity-60'
+              }`
+            }
+            aria-disabled={!cvUrl}
           >
             <Download size={20} />
-            Download CV
+            {cvUrl ? 'Download CV' : 'CV not uploaded'}
           </a>
         </motion.div>
 

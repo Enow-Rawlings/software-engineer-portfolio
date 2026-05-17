@@ -19,6 +19,7 @@ interface BlogPost {
   featured: boolean;
   published: boolean;
   publishedAt: string;
+  image?: string;
   createdAt: string;
 }
 
@@ -43,6 +44,7 @@ export default function NewBlogPage() {
         featured: post.featured,
         published: post.published,
         publishedAt: post.publishedAt,
+        image: post.image || '',
         createdAt: serverTimestamp(),
       });
       toast.success('Blog post published successfully');

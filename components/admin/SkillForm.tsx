@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 interface Skill {
   id: string;
   name: string;
-  category: 'Frontend' | 'Backend' | 'Databases' | 'Tools';
+  category: 'Frontend' | 'Backend' | 'CyberSecurity' | 'Tools';
   level: number;
   icon?: string;
 }
@@ -17,7 +17,7 @@ interface SkillFormProps {
   onCancel: () => void;
 }
 
-const CATEGORIES = ['Frontend', 'Backend', 'Databases', 'Tools'];
+const CATEGORIES = ['Frontend', 'Backend', 'CyberSecurity', 'Tools'];
 
 export function SkillForm({ skill, onSubmit, onCancel }: SkillFormProps) {
   const [formData, setFormData] = useState<Skill>(

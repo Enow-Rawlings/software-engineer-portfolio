@@ -7,6 +7,9 @@ import { useAuth } from '@/lib/auth-context';
 import { useRouter } from 'next/navigation';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '@/lib/firebase';
 
 interface PortfolioSettings {
   name: string;
@@ -47,11 +50,34 @@ export default function AdminSettingsPage() {
       return;
     }
 
-    const savedSettings = localStorage.getItem('portfolio_settings');
-    if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
-    }
-    setLoading(false);
+    const loadSettings = async () => {
+      const savedSettings = localStorage.getItem('portfolio_settings');
+      if (savedSettings) {
+        setSettings(JSON.parse(savedSettings));
+      }
+
+      try {
+        const settingsDoc = doc(db, 'settings', 'portfolio');
+        const docSnap = await getDoc(settingsDoc);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setSettings((prev) => ({
+            ...prev,
+            ...data,
+            socialLinks: {
+              ...prev.socialLinks,
+              ...(data.socialLinks || {}),
+            },
+          }));
+        }
+      } catch (error) {
+        console.error('Failed to load settings', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSettings();
   }, [user, router]);
 
   const handleChange = (field: string, value: string) => {
@@ -71,9 +97,45 @@ export default function AdminSettingsPage() {
     });
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+  const handleFileUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (field === 'cvUrl') {
+      setSaving(true);
+      try {
+        const storageReference = storageRef(
+          storage,
+          `documents/cv-${Date.now()}-${file.name}`
+        );
+        await uploadBytes(storageReference, file);
+        const url = await getDownloadURL(storageReference);
+        const updatedSettings = {
+          ...settings,
+          cvUrl: url,
+        };
+        setSettings(updatedSettings);
+        await setDoc(
+          doc(db, 'settings', 'portfolio'),
+          {
+            cvUrl: url,
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+        localStorage.setItem('portfolio_settings', JSON.stringify(updatedSettings));
+        toast.success('CV uploaded successfully');
+      } catch (error) {
+        console.error('Failed to upload CV', error);
+        toast.error('Failed to upload CV');
+      } finally {
+        setSaving(false);
+      }
+      return;
+    }
 
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -89,9 +151,18 @@ export default function AdminSettingsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      await setDoc(
+        doc(db, 'settings', 'portfolio'),
+        {
+          ...settings,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
       localStorage.setItem('portfolio_settings', JSON.stringify(settings));
       toast.success('Settings saved successfully');
     } catch (error) {
+      console.error('Failed to save settings', error);
       toast.error('Failed to save settings');
     } finally {
       setSaving(false);
@@ -242,7 +313,7 @@ export default function AdminSettingsPage() {
               <label className="block text-sm font-semibold text-foreground mb-4">
                 CV / Resume
               </label>
-              <label className="flex items-center justify-between p-4 border-2 border-dashed border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-smooth">
+              <div className="flex items-center justify-between p-4 border-2 border-dashed border-border rounded-lg hover:bg-muted/50 transition-smooth">
                 <div>
                   <p className="text-foreground font-medium">
                     {settings.cvUrl
@@ -253,19 +324,20 @@ export default function AdminSettingsPage() {
                     PDF, DOC, or DOCX
                   </p>
                 </div>
-                <button
-                  type="button"
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-lg transition-smooth"
+                <label
+                  htmlFor="cv-upload"
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:shadow-lg transition-smooth cursor-pointer"
                 >
                   Upload
-                </button>
+                </label>
                 <input
+                  id="cv-upload"
                   type="file"
                   accept=".pdf,.doc,.docx"
                   onChange={(e) => handleFileUpload(e, 'cvUrl')}
                   className="hidden"
                 />
-              </label>
+              </div>
             </motion.div>
 
             {/* Save Button */}

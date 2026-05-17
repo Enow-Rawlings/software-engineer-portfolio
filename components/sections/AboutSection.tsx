@@ -62,25 +62,21 @@ export function AboutSection() {
                 variants={itemVariants}
                 className="text-lg text-muted-foreground mb-6 leading-relaxed"
               >
-                I&apos;m a passionate software engineer with over 5 years of experience in full-stack development. 
-                I love creating innovative digital solutions that solve real-world problems and improve people&apos;s lives.
+                I'm Rawlings a software engineer and ethical hacking enthusiast based in Cameroon. I'm in my final year of a B.Tech in Software Engineering, and I've spent most of it going deeper than the curriculum: building real products, spinning up VMs, running CTFs, and learning how systems break.
               </motion.p>
 
               <motion.p
                 variants={itemVariants}
                 className="text-lg text-muted-foreground mb-6 leading-relaxed"
               >
-                My journey in tech started with a curiosity about how things work, and it has evolved into a deep 
-                commitment to continuous learning and excellence. I believe in writing clean, maintainable code and 
-                delivering exceptional user experiences.
+                I got into cybersecurity the way most people do — through curiosity and a show called Mr. Robot. What started as fascination turned into serious self-study: Kali Linux, Nmap, Metasploit, and hands-on penetration testing practice. Meanwhile I kept building APIs, React frontends, security tools, database-backed SaaS products.
               </motion.p>
 
               <motion.p
                 variants={itemVariants}
                 className="text-lg text-muted-foreground mb-8 leading-relaxed"
               >
-                When I&apos;m not coding, you can find me exploring new technologies, contributing to open-source projects, 
-                or sharing knowledge with the developer community.
+                Right now I'm working toward my eJPT certification and a Master's in Cybersecurity. I want to be the kind of engineer who can build a system and break it.
               </motion.p>
 
               {/* Highlights */}

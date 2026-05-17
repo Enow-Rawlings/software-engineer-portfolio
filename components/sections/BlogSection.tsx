@@ -18,6 +18,7 @@ interface BlogPost {
   featured: boolean
   published: boolean
   publishedAt: string
+  image?: string
   createdAt: string
 }
 
@@ -49,7 +50,9 @@ export function BlogSection() {
     fetchPosts()
   }, [])
 
-  const categories = ['All', ...new Set(posts.map(p => p.category))]
+  // Always show main categories
+  const ALL_CATEGORIES = ['Software Development', 'Cybersecurity', 'CTF Writeups', 'Career & Learning'] as const
+  const categories = ['All', ...ALL_CATEGORIES]
 
   const filteredPosts = posts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -105,7 +108,7 @@ export function BlogSection() {
               Latest <span className="gradient-text">Blog</span> Posts
             </h2>
             <p className="text-lg text-muted-foreground">
-              Insights, tutorials, and thoughts on software development
+              Thoughts on software engineering, ethical hacking, and the curious mind that lives at the intersection of both.
             </p>
           </motion.div>
 
@@ -190,6 +193,13 @@ function BlogCard({ post }: BlogCardProps) {
       whileHover={{ y: -4 }}
       className="group bg-card border border-border rounded-xl overflow-hidden hover:border-primary hover:shadow-lg transition-all duration-300"
     >
+      {/* Cover image */}
+      {post.image && (
+        <div className="h-40 md:h-48 w-full overflow-hidden">
+          <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+        </div>
+      )}
+
       <div className="p-6">
         <div className="flex items-center gap-4 mb-3 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">

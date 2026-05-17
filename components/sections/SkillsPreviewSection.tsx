@@ -7,19 +7,24 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal'
 
 const skillCategories = [
   {
-    category: 'Frontend',
-    skills: ['React', 'HTML', 'CSS', 'JavaScript', 'Tailwind CSS'],
-    color: 'from-blue-500 to-cyan-500',
+    category: "Frontend",
+    skills: ["HTML", "CSS", "JavaScript", "React", "Tailwind CSS"],
+    color: "from-blue-500 to-cyan-500",
   },
   {
-    category: 'Backend',
-    skills: ['Node.js', 'Express', 'Firebase', 'REST APIs'],
-    color: 'from-purple-500 to-pink-500',
+    category: "Backend",
+    skills: ["Express", "Node.js", "REST APIs", "Firebase", "MongoDB", "Supabase"],
+    color: "from-purple-500 to-pink-500",
   },
   {
-    category: 'Tools & Tech',
-    skills: ['Git', 'Nmap', 'AWS', 'MongoDB'],
-    color: 'from-green-500 to-teal-500',
+    category: "Cybersecurity",
+    skills: ["Nmap", "Kali Linux", "Metasploit", "Wireshark", "Burp Suite", "Linux", "CTF"],
+    color: "from-red-500 to-orange-500",
+  },
+  {
+    category: "Tools & DevOps",
+    skills: ["Git", "GitHub", "VirtualBox", "Railway", "WSL"],
+    color: "from-green-500 to-teal-500",
   },
 ]
 

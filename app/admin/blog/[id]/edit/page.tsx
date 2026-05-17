@@ -19,6 +19,7 @@ interface BlogPost {
   featured: boolean;
   published: boolean;
   publishedAt: string;
+  image?: string;
   createdAt: string;
 }
 
@@ -68,6 +69,7 @@ export default function EditBlogPage() {
         featured: updatedPost.featured,
         published: updatedPost.published,
         publishedAt: updatedPost.publishedAt,
+        image: updatedPost.image || '',
         updatedAt: serverTimestamp(),
       });
       toast.success('Blog post updated successfully');

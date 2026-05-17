@@ -19,6 +19,7 @@ interface Project {
   github: string;
   demo: string;
   visible: boolean;
+  category?: 'Full Stack' | 'Cybersecurity' | 'Tools & Scripts';
   createdAt: string;
 }
 

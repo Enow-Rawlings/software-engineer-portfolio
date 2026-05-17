@@ -39,7 +39,7 @@ export default function ProjectsPage() {
                 My <span className="gradient-text">Projects</span>
               </h1>
               <p className="text-xl text-muted-foreground">
-                Explore my portfolio of innovative solutions and creative implementations
+                A collection of real-world projects spanning full-stack development and cybersecurity tooling built from scratch, deployed, and continuously improved.
               </p>
             </motion.div>
           </section>
