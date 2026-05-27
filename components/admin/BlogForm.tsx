@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { storage } from '@/lib/firebase';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 
 interface BlogPost {
   id: string;
@@ -67,9 +66,7 @@ export function BlogForm({ post, onSubmit, onCancel }: BlogFormProps) {
     if (!file) return;
     setUploading(true);
     try {
-      const storageReference = storageRef(storage, `blog_images/${formData.id}-${file.name}`);
-      await uploadBytes(storageReference, file);
-      const url = await getDownloadURL(storageReference);
+      const url = await uploadToCloudinary(file, 'blog_images');
       setFormData({ ...formData, image: url });
     } catch (err) {
       console.error('Image upload error:', err);

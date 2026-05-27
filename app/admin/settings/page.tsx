@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { toast } from 'sonner';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
+import { uploadToCloudinary } from '@/lib/cloudinary';
 
 interface PortfolioSettings {
   name: string;
@@ -107,12 +107,7 @@ export default function AdminSettingsPage() {
     if (field === 'cvUrl') {
       setSaving(true);
       try {
-        const storageReference = storageRef(
-          storage,
-          `documents/cv-${Date.now()}-${file.name}`
-        );
-        await uploadBytes(storageReference, file);
-        const url = await getDownloadURL(storageReference);
+        const url = await uploadToCloudinary(file, 'documents');
         const updatedSettings = {
           ...settings,
           cvUrl: url,
